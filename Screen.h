@@ -16,6 +16,7 @@ private:
     SDL_Renderer * m_pRenderer;
     SDL_Texture * m_pTexture;
     Uint32 * m_pBuffer;
+    Uint32 * m_pBufferBlurred;
 
 public:
     const static int SCREEN_WIDTH = 800;
@@ -29,6 +30,7 @@ public:
     bool processEvents();
     void close();
     void clear();
+    void boxBlur();
 };
 };
 

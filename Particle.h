@@ -20,8 +20,9 @@ public:
     double m_direction;
     
     Particle();
+    void init();
     ~Particle();
-    void update();
+    void update(int interval);
 };
 }
 

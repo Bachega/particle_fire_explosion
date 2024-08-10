@@ -3,7 +3,7 @@
 namespace project {
 Screen::Screen()
 {
-    m_pWindow = NULL, m_pRenderer = NULL, m_pTexture = NULL, m_pBuffer = NULL;
+    m_pWindow = NULL, m_pRenderer = NULL, m_pTexture = NULL, m_pBuffer = NULL, m_pBufferBlurred = NULL;
 }
 
 Screen::~Screen()
@@ -51,6 +51,9 @@ bool Screen::init()
     m_pBuffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
     memset(m_pBuffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 
+    m_pBufferBlurred = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
+    memset(m_pBufferBlurred, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+
     update();
 
     return true;
@@ -71,6 +74,10 @@ void Screen::close()
 {
     if(m_pBuffer)
         delete [] m_pBuffer;
+    
+    if(m_pBufferBlurred)
+        delete [] m_pBufferBlurred;
+
     SDL_DestroyRenderer(m_pRenderer);
     SDL_DestroyTexture(m_pTexture);
     SDL_DestroyWindow(m_pWindow);
@@ -106,7 +113,52 @@ void Screen::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue)
 void Screen::clear()
 {
     memset(m_pBuffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+    memset(m_pBufferBlurred, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 }
 
+void Screen::boxBlur()
+{
+    // Swap the buffers
+    Uint32 * auxBuffer = m_pBuffer;
+    m_pBuffer = m_pBufferBlurred;
+    m_pBufferBlurred = auxBuffer;
+
+    for(int y = 0; y < SCREEN_HEIGHT; y++)
+    {
+        for(int x = 0; x < SCREEN_WIDTH; x++)
+        {
+            
+            int redTotal = 0, greenTotal = 0, blueTotal = 0;
+            
+            for(int row = -1; row <= 1; row++)
+            {
+                for(int col = -1; col <= 1; col++)
+                {
+                    int gridX = x + col;
+                    int gridY = y + row;
+                    
+                    // IF THE GRID PIXELS ARE INSIDE THE SCREEN
+                    if(gridX >= 0 && gridX < SCREEN_WIDTH && gridY >=0 && gridY < SCREEN_HEIGHT)
+                    {
+                        Uint32 color = m_pBufferBlurred[gridY * SCREEN_WIDTH + gridX];
+
+                        Uint8 red = color >> 24;
+                        Uint8 green = color >> 16;
+                        Uint8 blue = color >> 8;
+                        
+                        redTotal += red;
+                        greenTotal += green;
+                        blueTotal += blue;
+                    }
+                }
+            }
+
+            Uint8 red = redTotal/9;
+            Uint8 green = greenTotal/9;
+            Uint8 blue = blueTotal/9;
+
+            setPixel(x, y, red, green, blue);
+        }
+    }
 }
-    
+}
