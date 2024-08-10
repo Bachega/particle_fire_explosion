@@ -15,6 +15,8 @@ private:
 public:
     double m_x;
     double m_y;
+    double m_xVelocity;
+    double m_yVelocity;
     
     Particle();
     ~Particle();

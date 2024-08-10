@@ -29,9 +29,10 @@ int main(int argc, char ** argv)
     {
         // Update particles
 
+        // Clear the screen
+        screen.clear();
 
         // Draw particles
-
         swarm.update();
         
         elapsed = SDL_GetTicks();

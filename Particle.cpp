@@ -5,6 +5,9 @@ Particle::Particle()
 {
     m_x = ((2.0 * rand()) / RAND_MAX) - 1;
     m_y = ((2.0 * rand()) / RAND_MAX) - 1;
+
+    m_xVelocity = 0.001 * (((2.0 * rand())/RAND_MAX) - 1);
+    m_yVelocity = 0.001 * (((2.0 * rand())/RAND_MAX) - 1);
 }
 
 Particle::~Particle()
@@ -14,9 +17,7 @@ Particle::~Particle()
 
 void Particle::update()
 {
-    const double velocity = 0.01;
-
-    m_x += velocity;
-    m_y += velocity;
+    m_x += m_xVelocity;
+    m_y += m_yVelocity;
 }
 }
