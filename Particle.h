@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <math.h>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ private:
 public:
     double m_x;
     double m_y;
-    double m_xVelocity;
-    double m_yVelocity;
+    double m_velocity;
+    double m_direction;
     
     Particle();
     ~Particle();
