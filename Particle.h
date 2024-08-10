@@ -18,6 +18,7 @@ public:
     
     Particle();
     ~Particle();
+    void update();
 };
 }
 

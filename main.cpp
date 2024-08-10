@@ -31,6 +31,8 @@ int main(int argc, char ** argv)
 
 
         // Draw particles
+
+        swarm.update();
         
         elapsed = SDL_GetTicks();
         red = (unsigned char)((1 + sin(elapsed * 0.0007)) * 128);
