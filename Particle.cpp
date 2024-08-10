@@ -19,5 +19,11 @@ void Particle::update()
 {
     m_x += m_xVelocity;
     m_y += m_yVelocity;
+
+    if(m_x < -1.0 || m_x > 1.0)
+        m_xVelocity = 0 - m_xVelocity;
+    
+    if(m_y < -1.0 || m_y > 1.0)
+        m_yVelocity = 0 - m_yVelocity;
 }
 }
